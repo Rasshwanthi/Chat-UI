@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Responsive Chat UI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(120deg,#89f7fe,#66a6ff);
+}
+
+.chat-box{
+  width:360px;
+  height:520px;
+  background:#fff;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.chat-header{
+  padding:14px;
+  text-align:center;
+  background:#66a6ff;
+  color:white;
+  font-weight:600;
+}
+
+.chat{
+  flex:1;
+  padding:14px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.msg{
+  max-width:75%;
+  padding:10px 14px;
+  border-radius:14px;
+  font-size:14px;
+}
+
+.left{
+  background:#f1f1f1;
+  align-self:flex-start;
+}
+
+.right{
+  background:#66a6ff;
+  color:white;
+  align-self:flex-end;
+}
+
+.typing{
+  font-size:12px;
+  color:gray;
+  margin-left:10px;
+  display:none;
+}
+
+.input-area{
+  display:flex;
+  padding:10px;
+  gap:8px;
+  border-top:1px solid #ddd;
+}
+
+.input-area input{
+  flex:1;
+  padding:10px;
+  border-radius:20px;
+  border:1px solid #ccc;
+  outline:none;
+}
+
+.input-area button{
+  border:none;
+  background:#66a6ff;
+  color:white;
+  padding:10px 16px;
+  border-radius:20px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-box">
+
+  <div class="chat-header">Chat</div>
+
+  <div class="chat" id="chat">
+    <div class="msg left">Hi 👋</div>
+    <div class="msg left">Send me a message!</div>
+  </div>
+
+  <div class="typing" id="typing">Typing...</div>
+
+  <div class="input-area">
+    <input id="text" type="text" placeholder="Type a message..." />
+    <button id="sendBtn">Send</button>
+  </div>
+
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const text = document.getElementById("text");
+const sendBtn = document.getElementById("sendBtn");
+const typing = document.getElementById("typing");
+
+const replies = [
+  "Nice message 😄",
+  "Got it 👍",
+  "That sounds good!",
+  "Okay 😊",
+  "Interesting 🤔"
+];
+
+function sendMessage(){
+  if(text.value.trim() === "") return;
+
+  // user message
+  const userMsg = document.createElement("div");
+  userMsg.className = "msg right";
+  userMsg.textContent = text.value;
+  chat.appendChild(userMsg);
+  chat.scrollTop = chat.scrollHeight;
+
+  text.value = "";
+
+  // typing indicator
+  typing.style.display = "block";
+
+  // auto reply
+  setTimeout(()=>{
+    typing.style.display = "none";
+
+    const botMsg = document.createElement("div");
+    botMsg.className = "msg left";
+    botMsg.textContent = replies[Math.floor(Math.random() * replies.length)];
+    chat.appendChild(botMsg);
+    chat.scrollTop = chat.scrollHeight;
+  }, 1000);
+}
+
+sendBtn.addEventListener("click", sendMessage);
+
+text.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    sendMessage();
+  }
+});
+</script>
+
+</body>
+</html>
